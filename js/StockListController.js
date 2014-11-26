@@ -48,7 +48,7 @@ screenerApp.controller('StockListController', function ($scope, $http) {
             })
         }).success(function(res) {
             var price = res.underlying_price;
-            var call = _.first(_.filter(res.calls, function(x) {return x.strike > price}));
+            var call = _.first(_.filter(res.calls, function(x) {return x.strike > price && x.p > 0}));
             if (angular.isDefined(call) && call != null) stock.profit = call.p * 100 / price;
             stock.chains = res;
         });
