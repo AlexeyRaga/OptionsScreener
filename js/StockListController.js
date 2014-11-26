@@ -8,6 +8,10 @@ screenerApp.controller('StockListController', function ($scope, $http) {
         return [transform].concat(defaults);
     }
 
+    $scope.run = function() {
+        _.each($scope.stocks, downloadOptions)
+    };
+
     function expireSaturday(date) {
         date = new Date(date.getYear() + 1900, date.getMonth(), 1);
         var fridayCount = 0;
@@ -29,6 +33,7 @@ screenerApp.controller('StockListController', function ($scope, $http) {
     }
 
     function downloadOptions(stock) {
+        if (angular.isDefined(stock.chains)) return;
         var exp = nextExpireDate();
         var expM = exp.getMonth() + 1;
         var expY = exp.getYear() + 1900;
@@ -44,7 +49,7 @@ screenerApp.controller('StockListController', function ($scope, $http) {
         }).success(function(res) {
             var price = res.underlying_price;
             var call = _.first(_.filter(res.calls, function(x) {return x.strike > price}));
-            stock.profit = call.p * 100 / price;
+            if (angular.isDefined(call) && call != null) stock.profit = call.p * 100 / price;
             stock.chains = res;
         });
     }

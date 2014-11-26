@@ -12,7 +12,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/screener.css" rel="stylesheet">
 </head>
-<body ng-app="Screener">
+<body ng-app="Screener" ng-controller="StockListController">
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
@@ -27,8 +27,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Settings</a></li>
+                <li><a href="#" ng-click="run()">Run</a></li>
+                <li><a href="#" ng-click="predicate='profit'; reverse='true'">Sort by profit</a></li>
                 <li><a href="#">Profile</a></li>
                 <li><a href="#">Help</a></li>
             </ul>
@@ -39,12 +39,12 @@
     </div>
 </nav>
 
-<div class="container-fluid" ng-controller="StockListController">
+<div class="container-fluid">
     <div class="row">
         <div class="col-sm-4 col-md-3 sidebar">
 
             <ul class="nav nav-sidebar">
-                <li ng-repeat="stock in stocks">
+                <li ng-repeat="stock in stocks | orderBy:predicate:reverse">
                     <a href="#" ng-click="showStock(stock)"><strong>{{stock.symbol}}</strong> - <span class="small">{{stock.name}}</span>
                         <span class="pull-right text-muted">{{stock.profit | currency : "%"}}</span>
                         <br/>
